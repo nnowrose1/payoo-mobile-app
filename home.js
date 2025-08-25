@@ -89,10 +89,42 @@ document.getElementById("cash-out-btn").addEventListener('click', function(){
     }
     const afterCashOutAmount = balance - cashOutAmount;
     document.getElementById('balance').innerText = afterCashOutAmount;
-    document.getElementById('pin').value ='';
-    document.getElementById('cash-out-amount').value = '';
-    document.getElementById('agent-number').value = '';
+
     
+     document.getElementById('pin').value ='';
+    document.getElementById("cash-out-amount").value = '';
+    document.getElementById('agent-number').value = '';  
+})
+
+// transfer money
+document.getElementById("transfer-money-btn").addEventListener('click', function(){
+    const transferAccountNumber = getInputValue("transfer-account");
+    console.log(transferAccountNumber);
+    
+    if(transferAccountNumber.length !== 11){
+        alert("Invalid account number");
+        return;
+    }
+    const  transferPin = getInputValueNumber("transfer-pin");
+   
+    if(transferPin !== 1234){
+        alert("Incorrect pin");
+        return;
+    }
+    const balance = getInnertextNumber('balance');
+    const transferAmount = getInputValueNumber("transfer-amount");
+    // console.log(balance, transferAmount);
+    
+    if(transferAmount <= 0 || transferAmount > balance){
+        alert('Invalid Request');
+        return;
+    }
+    const afterTransferMoneyAmount = balance - transferAmount;
+    document.getElementById('balance').innerText = afterTransferMoneyAmount;
+
+     document.getElementById("transfer-pin").value ='';
+    document.getElementById("transfer-amount").value = '';
+    document.getElementById("transfer-account").value = '';
 })
 
 // toggling
