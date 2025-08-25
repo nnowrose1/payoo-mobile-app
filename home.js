@@ -178,6 +178,11 @@ document.getElementById("transactions").addEventListener('click',function(){
 
 })
 
+// log out
+document.getElementById("log-out-button").addEventListener('click', function(){
+    window.location.href = './index.html';
+})
+
 // toggling
 // reusable function
 function toggle(id){
