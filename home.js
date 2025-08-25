@@ -1,4 +1,5 @@
 // console.log("Connected");
+const transactionData = [];
 // reusable functions
 function getInputValue(id){
     const inputElement = document.getElementById(id);
@@ -26,46 +27,54 @@ function getInnertextNumber(id){
     return innertextNumber;
 }
 
-function setInnertext(id,value){
-    const tagElement = document.getElementById(id);
-    let innertext = tagElement.innerText;
-    innertext = value;
-    return innertext;
+function setInnertext(value){
+    const element = document.getElementById("balance");
+    element.innerText = value;
 }
 // add money
 document.getElementById('add-money-btn').addEventListener('click',function(event){
     // console.log('btn clicked');
  const addAmount = getInputValueNumber('add-amount');
+  const balance = getInnertextNumber('balance');
+  const accountNumber = getInputValue('account-number');
+  const pinNumber = getInputValueNumber('pin-number');
    if(addAmount <= 0){
     alert("Invalid amount");
-    return;
+    // return;
  }
     // const addAmount = parseInt(document.getElementById('add-amount').value);
     // console.log((addAmount));
-    const balance = getInnertextNumber('balance');
+    // const balance = getInnertextNumber('balance');
     // const balance = parseInt(document.getElementById('balance').innerText);
-     console.log(balance);
-    const accountNumber = getInputValue('account-number');
-     console.log(accountNumber);
-    if(accountNumber.length !== 11){
+    //  console.log(balance);
+    // const accountNumber = getInputValue('account-number');
+    //  console.log(accountNumber);
+    else if(accountNumber.length !== 11){
         alert("Invalid account number");
-        return;
+        // return;
     }
-    const pinNumber = getInputValueNumber('pin-number');
-    console.log(pinNumber);
+    // const pinNumber = getInputValueNumber('pin-number');
+    // console.log(pinNumber);
     
-    if(pinNumber !== 1234){
+    else if(pinNumber !== 1234){
         alert("Incorrect pin");
-        return;
+        // return;
     }
-    const finalAmount = addAmount + balance;
+    else{
+        const finalAmount = addAmount + balance;
     // const final = setInnertext("balance", finalAmount);
     // console.log(finalAmount);
-    document.getElementById('balance').innerText = finalAmount;
+    setInnertext(finalAmount);
+    }
     document.getElementById('add-amount').value = '';
     document.getElementById('account-number').value = '';
     document.getElementById('pin-number').value = '';
-    
+
+    const data = {
+        name: "Add Money",
+        date: new Date().toLocaleTimeString(),
+    }
+    transactionData.push(data);
 })
 
 // cash out
@@ -77,54 +86,96 @@ document.getElementById("cash-out-btn").addEventListener('click', function(){
     // console.log(cashOutAmount, pin, balance);
     if(agentNumber.length !== 11){
         alert('Please provide valid agent number');
-        return;
+        // return;
     }
-    if(cashOutAmount > balance || cashOutAmount <= 0){
+    else if(cashOutAmount > balance || cashOutAmount <= 0){
         alert('Invalid request');
-        return;
+        // return;
     }
-    if(pin !== 1234){
+    else if(pin !== 1234){
         alert('Incorrect pin');
-        return;
+        // return;
     }
-    const afterCashOutAmount = balance - cashOutAmount;
-    document.getElementById('balance').innerText = afterCashOutAmount;
-
-    
-     document.getElementById('pin').value ='';
+   else {
+   const afterCashOutAmount = balance - cashOutAmount;
+   setInnertext(afterCashOutAmount);
+   }
+    document.getElementById('pin').value ='';
     document.getElementById("cash-out-amount").value = '';
     document.getElementById('agent-number').value = '';  
+
+    const data = {
+        name: "Cash-out",
+        date: new Date().toLocaleTimeString()
+    }
+    transactionData.push(data);
 })
 
 // transfer money
 document.getElementById("transfer-money-btn").addEventListener('click', function(){
     const transferAccountNumber = getInputValue("transfer-account");
     console.log(transferAccountNumber);
+     const  transferPin = getInputValueNumber("transfer-pin");
+    const balance = getInnertextNumber('balance');
+    const transferAmount = getInputValueNumber("transfer-amount");
     
     if(transferAccountNumber.length !== 11){
         alert("Invalid account number");
-        return;
+        // return;
     }
-    const  transferPin = getInputValueNumber("transfer-pin");
+    // const  transferPin = getInputValueNumber("transfer-pin");
    
-    if(transferPin !== 1234){
+    else if(transferPin !== 1234){
         alert("Incorrect pin");
-        return;
+        // return;
     }
-    const balance = getInnertextNumber('balance');
-    const transferAmount = getInputValueNumber("transfer-amount");
+  
     // console.log(balance, transferAmount);
     
-    if(transferAmount <= 0 || transferAmount > balance){
+    else if(transferAmount <= 0 || transferAmount > balance){
         alert('Invalid Request');
-        return;
+        // return;
     }
-    const afterTransferMoneyAmount = balance - transferAmount;
-    document.getElementById('balance').innerText = afterTransferMoneyAmount;
+   else{
+     const afterTransferMoneyAmount = balance - transferAmount;
+    setInnertext(afterTransferMoneyAmount);
+   }
 
      document.getElementById("transfer-pin").value ='';
     document.getElementById("transfer-amount").value = '';
     document.getElementById("transfer-account").value = '';
+     const data = {
+        name: "Transfer Money",
+        date: new Date().toLocaleTimeString(),
+    }
+    transactionData.push(data);
+})
+
+// transaction
+document.getElementById("transactions").addEventListener('click',function(){
+    const transactionContainer = document.getElementById("transaction-main");
+    transactionContainer.innerText = '';
+
+    for(const data of transactionData){
+        const div = document.createElement('div');
+        div.innerHTML =`
+             <div class="max-w-[402px] mx-auto rounded-[12px] py-[13px] pl-4 bg-white flex justify-between">
+        <div class="transaction-left flex gap-3 justify-center items-center ">
+            <div class="h-[50px] w-[50px] rounded-full bg-[#0808080d] flex justify-center items-center"><img src="./assets/wallet1.png" alt=""></div>
+            <div>
+                <h4>${data.name}</h4>
+                <p>${data.date}</p>
+            </div>
+        </div>
+        <div class="transaction-right pr-4 py-[13px] ">
+         <p><i class="fa-solid fa-ellipsis-vertical"></i></p>
+        </div>
+
+    </div>
+        `
+        transactionContainer.appendChild(div);
+    }
+
 })
 
 // toggling
