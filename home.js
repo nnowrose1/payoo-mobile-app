@@ -133,26 +133,45 @@ function toggle(id){
     const togglingOptions = document.getElementsByClassName('option');
     for(const togglingOption of togglingOptions){
         togglingOption.style.display = "none";
+           }
+    document.getElementById(id).style.display = "block";
+   
+}
+
+function toggleStyle(id){
+    const togglingColors = document.getElementsByClassName('toggle-color');
+    for(const togglingColor of togglingColors){
+        togglingColor.classList.remove('border-[#0874F2]', 'bg-[#0874f20d]');
+        togglingColor.classList.add('border-gray-300', 'bg-[#F4F5F7]');
     }
-     document.getElementById(id).style.display = "block";
+         document.getElementById(id).classList.remove('border-gray-300', 'bg-[#F4F5F7]');
+     document.getElementById(id).classList.add('border-[#0874F2]', 'bg-[#0874f20d]');
+    
 }
 
 document.getElementById("add-money").addEventListener('click', function(){
    toggle("add-money-parent");
+   toggleStyle("add-money");
 })
 document.getElementById("cash-out").addEventListener('click', function(){
     toggle("cash-out-parent");  
+    toggleStyle("cash-out");
 })
 document.getElementById("transfer-money").addEventListener('click', function(){
    toggle("transfer-money-parent");
+   toggleStyle("transfer-money");
+   
 })
 document.getElementById("bonus").addEventListener('click', function(){
    toggle("get-bonus-parent");
+   toggleStyle("bonus");
 })
 document.getElementById("pay-bill").addEventListener('click', function(){
    toggle("pay-bill-parent");
+   toggleStyle("pay-bill");
 })
 document.getElementById("transactions").addEventListener('click', function(){
    toggle("transactions-parent");
+   toggleStyle("transactions");
 })
 
